@@ -439,4 +439,38 @@ ConfigDictTemplate = [
 
         ]
     },
+    {
+        "name": "nextcloud",
+        "values": [
+            {
+                "option": "enabled",
+                "default": "true",
+                "customizable": True,
+                "question": "Install nextcloud?"
+            },
+            {
+                "option": "dbuser",
+                "default": "nextcloud",
+            },
+            {
+                "option": "dbname",
+                "default": "nextcloud",
+            },
+            {
+                "option": "installpath",
+                "default": "/var/www/",
+            },
+            {
+                "option": "nextcloudzip",
+                "default": "https://download.nextcloud.com/server/releases/latest.zip",
+            },
+            {
+                "option": "dbpassword",
+                "default": make_password,
+                "customizable": True,
+                "question": "Please enter nextcloud db password"
+            },
+
+        ]
+    },
 ]

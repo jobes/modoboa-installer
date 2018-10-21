@@ -100,6 +100,7 @@ def main(input_args):
     scripts.install("opendkim", config)
     scripts.install("postfix", config)
     scripts.install("dovecot", config)
+    scripts.install("nextcloud", config)
     system.restart_service("cron")
     utils.printcolor(
         "Congratulations! You can enjoy Modoboa at https://{} (admin:password)"
