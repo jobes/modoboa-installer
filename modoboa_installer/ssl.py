@@ -40,6 +40,13 @@ class SelfSignedCertificate(CertificateBackend):
                 self.config.set(
                     "general", "tls_cert_file",
                     "{}/certs/%(hostname)s.cert".format(base_dir))
+                if self.config.get("nextcloud", "enabled") == 'true':
+                    self.config.set(
+                        "nextcloud", "tls_key_file",
+                        "{}/private/cloud.%(domain)s.key".format(base_dir))
+                    self.config.set(
+                        "nextcloud", "tls_cert_file",
+                        "{}/certs/cloud.%(domain)s.cert".format(base_dir))
                 return
         raise RuntimeError("Cannot find a directory to store certificate")
 
@@ -55,6 +62,14 @@ class SelfSignedCertificate(CertificateBackend):
                 self.config.get("general", "hostname"),
                 self.config.get("general", "tls_key_file"),
                 self.config.get("general", "tls_cert_file"))
+        )
+        if self.config.get("nextcloud", "enabled") == 'true':
+            utils.exec_cmd(
+            "openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 "
+            "-subj '/CN={}' -keyout {} -out {}".format(
+                "cloud."+self.config.get("nextcloud", "domain"),
+                self.config.get("nextcloud", "tls_key_file"),
+                self.config.get("nextcloud", "tls_cert_file"))
         )
 
 
@@ -83,6 +98,21 @@ class LetsEncryptCertificate(CertificateBackend):
         cfg_file = "/etc/letsencrypt/renewal/{}.conf".format(hostname)
         pattern = "s/authenticator = standalone/authenticator = nginx/"
         utils.exec_cmd("perl -pi -e '{}' {}".format(pattern, cfg_file))
+
+        if self.config.get("nextcloud", "enabled") == 'true':
+            nchostname="cloud."+self.config.get("general", "domain")
+            utils.exec_cmd(
+                "/opt/certbot-auto certonly -n --standalone -d {} "
+                "-m {} --agree-tos".format(
+                    nchostname, self.config.get("letsencrypt", "email")))
+            self.config.set("general", "tls_cert_file", (
+                "/etc/letsencrypt/live/{}/fullchain.pem".format(nchostname)))
+            self.config.set("general", "tls_key_file", (
+                "/etc/letsencrypt/live/{}/privkey.pem".format(nchostname)))
+            
+             cfg_file = "/etc/letsencrypt/renewal/{}.conf".format(nchostname)
+            pattern = "s/authenticator = standalone/authenticator = nginx/"
+            utils.exec_cmd("perl -pi -e '{}' {}".format(pattern, cfg_file))
 
 
 def get_backend(config):

@@ -74,8 +74,6 @@ class Nextcloud(base.Installer):
         if os.path.exists(link):
             return
         os.symlink(dst, link)
-        #generovat certifikat cloud.cezmatrix.sk
         #generovat mail s heslom pre nextcloud@cezmatrix.sk
-        #RPM packages
         #rozchodit prihlasovanie imap
 
