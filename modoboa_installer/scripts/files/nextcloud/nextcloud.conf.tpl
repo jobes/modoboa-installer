@@ -14,8 +14,8 @@ server {
     listen [::]:443 ssl http2;
     server_name cloud.%domain;
 
-    ssl_certificate /etc/letsencrypt/live/cloud.%domain/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/cloud.%domain/privkey.pem;
+    ssl_certificate %tls_cert_file;
+    ssl_certificate_key %tls_key_file;
 
     # Add headers to serve security related headers
     # Before enabling Strict-Transport-Security headers please read into this
