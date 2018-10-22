@@ -458,7 +458,7 @@ ConfigDictTemplate = [
             },
             {
                 "option": "installpath",
-                "default": "/var/www/",
+                "default": "/var/www",
             },
             {
                 "option": "nextcloudzip",

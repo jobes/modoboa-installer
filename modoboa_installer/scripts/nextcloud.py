@@ -83,4 +83,5 @@ class Nextcloud(base.Installer):
         os.symlink(dst, link)
         #generovat mail s heslom pre nextcloud@cezmatrix.sk
         #rozchodit prihlasovanie imap
+        #odstran admin user pre nextcloud
 

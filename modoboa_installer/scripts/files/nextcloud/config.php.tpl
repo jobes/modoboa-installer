@@ -19,7 +19,7 @@ $CONFIG = array (
 		'class' => 'OC_User_IMAP',
 		'arguments' =>
 		array (
-		0 => '{imap.gmail.com:993/imap/ssl}INBOX',
+		0 => '{mail.cezmatrix.sk:993/imap/ssl}INBOX',
 		),
 	),
 	),
