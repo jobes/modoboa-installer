@@ -30,7 +30,8 @@ class Nextcloud(base.Installer):
             "php-imagick", "php-dev", "php-common", "php-mbstring",
             "php-zip" "php-soap", "php-pgsql"],
         "rpm": [
-            "TODO",
+            "php", "php-mysql", "php-pecl-zip", "php-xml", "php-mbstring",
+            "php-gd", "php-fpm", "php-intl", "php-pgsql"
         ]
     }
     config_files = [
