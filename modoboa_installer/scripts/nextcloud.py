@@ -9,15 +9,11 @@ import stat
 import sys
 import subprocess
 
-from future.standard_library import install_aliases
-install_aliases()
-from urllib.request import urlretrieve
-import zipfile
-
 from .. import compatibility_matrix
 from .. import package
 from .. import python
 from .. import utils
+from .. import python
 
 from . import base
 
@@ -48,6 +44,11 @@ class Nextcloud(base.Installer):
     def __init__(self, config):
         """Get configuration."""
         super(Nextcloud, self).__init__(config)
+        python.install_packages(["future"])
+        from future.standard_library import install_aliases
+        install_aliases()
+        from urllib.request import urlretrieve
+        import zipfile
         urlretrieve(self.config.get("nextcloud", "nextcloudzip"), '/tmp/latest.zip')
         zip_ref = zipfile.ZipFile('/tmp/latest.zip', 'r')
         zip_ref.extractall(self.config.get("nextcloud", "installpath"))
@@ -57,15 +58,15 @@ class Nextcloud(base.Installer):
         
 
     def post_run(self):
-        if not os.exists(self.config.get("nextcloud", "installpath")+"/nextcloud/data/"):
+        if not os.path.exists(self.config.get("nextcloud", "installpath")+"/nextcloud/data/"):
             os.makedirs(self.config.get("nextcloud", "installpath")+"/nextcloud/data/", 0o655)
 
         uid = pwd.getpwnam("www-data").pw_uid
         gid = grp.getgrnam("www-data").gr_gid
         os.chown(self.config.get("nextcloud", "installpath")+"/nextcloud", uid, gid)
-        subprocess.Popen('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database '+\
+        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database '+\
             self.config.get("database", "engine")+' --database-name '+self.config.get("nextcloud", "dbname")+' --database-user '+\
-            self.config.get("nextcloud", "dbuser")+' --database-pass "'+self.config.get("nextcloud", "dbpassword").split(), stdout=subprocess.PIPE)
+            self.config.get("nextcloud", "dbuser")+' --database-pass "'+self.config.get("nextcloud", "dbpassword")).split(), stdout=subprocess.PIPE)
         
         link = "/etc/nginx/sites-enabled/nextcloud.conf"
         dst = "/etc/nginx/sites-available/nextcloud.conf"
