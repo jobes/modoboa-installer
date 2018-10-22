@@ -75,6 +75,9 @@ class Nextcloud(base.Installer):
             self.config.get("database", "engine")+' --database-name '+self.config.get("nextcloud", "dbname")+' --database-user '+\
             self.config.get("nextcloud", "dbuser")+' --database-pass "'+self.config.get("nextcloud", "dbpassword")+\
             '--admin-user "admin" --admin-pass "password"').split(), stdout=subprocess.PIPE)
+
+        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:install user_external').split(), stdout=subprocess.PIPE)
+        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:enable user_external').split(), stdout=subprocess.PIPE)
         
         link = "/etc/nginx/sites-enabled/nextcloud.conf"
         dst = "/etc/nginx/sites-available/nextcloud.conf"

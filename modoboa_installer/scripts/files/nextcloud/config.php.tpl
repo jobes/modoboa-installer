@@ -29,4 +29,10 @@ $CONFIG = array (
 	'overwritewebroot' => '/',
 	'htaccess.RewriteBase' => '/',
 	'log_rotate_size' => 10485760,
+	'user_backends' => array(
+		array(
+			'class'=>'OC_User_IMAP',
+			'arguments'=>array('{127.0.0.1:993/imap/ssl/novalidate-cert}')
+		)
+  	),
 ); 
