@@ -28,11 +28,10 @@ class Nextcloud(base.Installer):
             "php-fpm", "php-curl", "php-cli", "php-mysql", "php-gd",
             "php-iconv", "php-xsl", "php-json", "php-intl", "php-pear",
             "php-imagick", "php-dev", "php-common", "php-mbstring",
-            "php-zip", "php-soap", "php-pgsql"],
+            "php-zip", "php-soap", "php-pgsql", "php-imap"],
         "rpm": [
             "php", "php-mysql", "php-pecl-zip", "php-xml", "php-mbstring",
-            "php-gd", "php-fpm", "php-intl", "php-pgsql"
-        ]
+            "php-gd", "php-fpm", "php-intl", "php-pgsql", "php-imap"]
     }
     config_files = [
         "nextcloud.conf=/etc/nginx/sites-available/nextcloud.conf",
@@ -78,6 +77,7 @@ class Nextcloud(base.Installer):
 
         subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:install user_external').split(), stdout=subprocess.PIPE)
         subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:enable user_external').split(), stdout=subprocess.PIPE)
+        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ user:disable admin').split(), stdout=subprocess.PIPE)
         
         link = "/etc/nginx/sites-enabled/nextcloud.conf"
         dst = "/etc/nginx/sites-available/nextcloud.conf"
@@ -85,6 +85,5 @@ class Nextcloud(base.Installer):
             return
         os.symlink(dst, link)
         #generovat mail s heslom pre nextcloud@cezmatrix.sk
-        #rozchodit prihlasovanie imap
-        #odstran admin user pre nextcloud
+        #zabudnute heslo
 

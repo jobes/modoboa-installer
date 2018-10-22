@@ -12,7 +12,7 @@ $CONFIG = array (
 	'token_auth_enforced' => true,
 	'auth.bruteforce.protection.enabled' => true,
 	'skeletondirectory' => '%installpath/nextcloud/core/skeleton',
-	'lost_password_link' => 'https://$hostname/accounts/password_reset/',
+	'lost_password_link' => 'https://%hostname/accounts/password_reset/',
 	'mail_domain' => 'cezmatrix.sk',
 	'mail_from_address' => '%domain',
 	'mail_smtpdebug' => false,
@@ -32,7 +32,7 @@ $CONFIG = array (
 	'user_backends' => array(
 		array(
 			'class'=>'OC_User_IMAP',
-			'arguments'=>array('{127.0.0.1:993/imap/ssl/novalidate-cert}')
+			'arguments'=>array('{localhost:143/novalidate-cert}')
 		)
   	),
 ); 
