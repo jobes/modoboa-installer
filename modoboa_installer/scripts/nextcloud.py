@@ -64,7 +64,13 @@ class Nextcloud(base.Installer):
 
         uid = pwd.getpwnam("www-data").pw_uid
         gid = grp.getgrnam("www-data").gr_gid
-        os.chown(self.config.get("nextcloud", "installpath")+"/nextcloud", uid, gid)
+
+        for root, dirs, files in os.walk(self.config.get("nextcloud", "installpath")+'/nextcloud'):
+            for momo in dirs:  
+                os.chown(os.path.join(root, momo), uid, gid)
+            for momo in files:
+                os.chown(os.path.join(root, momo), uid, gid)
+
         subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database '+\
             self.config.get("database", "engine")+' --database-name '+self.config.get("nextcloud", "dbname")+' --database-user '+\
             self.config.get("nextcloud", "dbuser")+' --database-pass "'+self.config.get("nextcloud", "dbpassword")).split(), stdout=subprocess.PIPE)
