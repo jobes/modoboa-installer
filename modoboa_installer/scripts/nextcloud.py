@@ -28,7 +28,7 @@ class Nextcloud(base.Installer):
             "php-fpm", "php-curl", "php-cli", "php-mysql", "php-gd",
             "php-iconv", "php-xsl", "php-json", "php-intl", "php-pear",
             "php-imagick", "php-dev", "php-common", "php-mbstring",
-            "php-zip" "php-soap", "php-pgsql"],
+            "php-zip", "php-soap", "php-pgsql"],
         "rpm": [
             "php", "php-mysql", "php-pecl-zip", "php-xml", "php-mbstring",
             "php-gd", "php-fpm", "php-intl", "php-pgsql"
