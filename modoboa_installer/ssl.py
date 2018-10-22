@@ -41,12 +41,13 @@ class SelfSignedCertificate(CertificateBackend):
                     "general", "tls_cert_file",
                     "{}/certs/%(hostname)s.cert".format(base_dir))
                 if self.config.get("nextcloud", "enabled") == 'true':
+                    domain = self.config.get("general", "domain")
                     self.config.set(
                         "nextcloud", "tls_key_file",
-                        "{}/private/cloud.%(domain)s.key".format(base_dir))
+                        "{}/private/cloud.{}.key".format(base_dir, domain))
                     self.config.set(
                         "nextcloud", "tls_cert_file",
-                        "{}/certs/cloud.%(domain)s.cert".format(base_dir))
+                        "{}/certs/cloud.{}.cert".format(base_dir, domain))
                 return
         raise RuntimeError("Cannot find a directory to store certificate")
 
@@ -67,7 +68,7 @@ class SelfSignedCertificate(CertificateBackend):
             utils.exec_cmd(
             "openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 "
             "-subj '/CN={}' -keyout {} -out {}".format(
-                "cloud."+self.config.get("nextcloud", "domain"),
+                "cloud."+self.config.get("general", "domain"),
                 self.config.get("nextcloud", "tls_key_file"),
                 self.config.get("nextcloud", "tls_cert_file"))
         )
@@ -110,7 +111,7 @@ class LetsEncryptCertificate(CertificateBackend):
             self.config.set("general", "tls_key_file", (
                 "/etc/letsencrypt/live/{}/privkey.pem".format(nchostname)))
             
-             cfg_file = "/etc/letsencrypt/renewal/{}.conf".format(nchostname)
+            cfg_file = "/etc/letsencrypt/renewal/{}.conf".format(nchostname)
             pattern = "s/authenticator = standalone/authenticator = nginx/"
             utils.exec_cmd("perl -pi -e '{}' {}".format(pattern, cfg_file))
 
