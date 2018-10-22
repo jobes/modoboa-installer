@@ -76,4 +76,5 @@ class Nextcloud(base.Installer):
         #generovat certifikat cloud.cezmatrix.sk
         #generovat mail s heslom pre nextcloud@cezmatrix.sk
         #RPM packages
+        #rozchodit prihlasovanie imap
 
