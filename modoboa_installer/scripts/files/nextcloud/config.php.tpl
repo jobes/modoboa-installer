@@ -12,17 +12,6 @@ $CONFIG = array (
 	'token_auth_enforced' => true,
 	'auth.bruteforce.protection.enabled' => true,
 	'skeletondirectory' => '%installpath/nextcloud/core/skeleton',
-	'user_backends' =>
-	array (
-	0 =>
-	array (
-		'class' => 'OC_User_IMAP',
-		'arguments' =>
-		array (
-		0 => '{mail.cezmatrix.sk:993/imap/ssl}INBOX',
-		),
-	),
-	),
 	'lost_password_link' => 'https://$hostname/accounts/password_reset/',
 	'mail_domain' => 'cezmatrix.sk',
 	'mail_from_address' => '%domain',
