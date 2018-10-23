@@ -61,10 +61,12 @@ class Nextcloud(base.Installer):
         gid = grp.getgrnam("www-data").gr_gid
 
         utils.exec_cmd("chown -R www-data:www-data "+self.config.get("nextcloud", "installpath")+"/nextcloud/")
-        utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database '+\
-            self.config.get("database", "engine")+' --database-name '+self.config.get("nextcloud", "dbname")+' --database-user '+\
-            self.config.get("nextcloud", "dbuser")+' --database-pass "'+self.config.get("nextcloud", "dbpassword")+\
-            '--admin-user "admin" --admin-pass "password"', "www-data", login=False)
+        installCmd = 'php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database "'+\
+            self.config.get("database", "engine")+'" --database-name "'+self.config.get("nextcloud", "dbname")+'" --database-user "'+\
+            self.config.get("nextcloud", "dbuser")+'" --database-pass "'+self.config.get("nextcloud", "dbpassword")+\
+            '" --admin-user "admin" --admin-pass "password"'
+        
+        utils.exec_cmd(installCmd, "www-data", login=False)
 
         utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:install user_external', "www-data", login=False)
         utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:enable user_external', "www-data", login=False)
