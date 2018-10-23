@@ -66,7 +66,7 @@ class Nextcloud(base.Installer):
             self.config.get("nextcloud", "dbuser")+' --database-pass "'+self.config.get("nextcloud", "dbpassword")+\
             '--admin-user "admin" --admin-pass "password"', "www-data", login=False)
 
-        utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:install user_external', "www-data", login=False
+        utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:install user_external', "www-data", login=False)
         utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:enable user_external', "www-data", login=False)
         utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ user:disable admin', "www-data", login=False)
         
