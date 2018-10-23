@@ -61,9 +61,8 @@ class Nextcloud(base.Installer):
         if not os.path.exists(self.config.get("nextcloud", "installpath")+"/nextcloud/data/"):
             os.makedirs(self.config.get("nextcloud", "installpath")+"/nextcloud/data/", 0o655)
 
-        uid = pwd.getpwnam("www-data").pw_uid
-        gid = grp.getgrnam("www-data").gr_gid
-
+        subprocess.Popen(("wget https://download.nextcloud.com/server/releases/latest.zip -P /tmp").split())
+        subprocess.Popen(("unzip /tmp/latest.zip  -d "+self.config.get("nextcloud", "installpath")).split())
         subprocess.Popen(("chown -R www-data:www-data "+self.config.get("nextcloud", "installpath")).split())
 
         subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database '+\
