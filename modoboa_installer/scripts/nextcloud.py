@@ -53,15 +53,11 @@ class Nextcloud(base.Installer):
         zip_ref = zipfile.ZipFile('/tmp/latest.zip', 'r')
         zip_ref.extractall(self.config.get("nextcloud", "installpath"))
         zip_ref.close()
-        os.remove('/tmp/latest.zip') 
+        os.remove('/tmp/latest.zip')
 
         
 
     def post_run(self):
-        subprocess.Popen(("wget https://download.nextcloud.com/server/releases/latest.zip -P /tmp").split())
-        subprocess.Popen(("unzip /tmp/latest.zip  -d "+self.config.get("nextcloud", "installpath")).split())
-        subprocess.Popen(("chown -R www-data:www-data "+self.config.get("nextcloud", "installpath")).split())
-
         uid = pwd.getpwnam("www-data").pw_uid
         gid = grp.getgrnam("www-data").gr_gid
         for root, dirs, files in os.walk(self.config.get("nextcloud", "installpath")+'/nextcloud'):
