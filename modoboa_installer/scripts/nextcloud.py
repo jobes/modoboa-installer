@@ -22,7 +22,6 @@ class Nextcloud(base.Installer):
     """Modoboa installation."""
 
     appname = "nextcloud"
-    no_daemon = True
     packages = {
         "deb": [
             "php-fpm", "php-curl", "php-cli", "php-mysql", "php-gd",
@@ -61,15 +60,15 @@ class Nextcloud(base.Installer):
         uid = pwd.getpwnam("www-data").pw_uid
         gid = grp.getgrnam("www-data").gr_gid
 
-        subprocess.Popen(("chown -R www-data:www-data "+self.config.get("nextcloud", "installpath")+"/nextcloud/").split())
-        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database '+\
+        utils.exec_cmd("chown -R www-data:www-data "+self.config.get("nextcloud", "installpath")+"/nextcloud/")
+        utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ  maintenance:install --database '+\
             self.config.get("database", "engine")+' --database-name '+self.config.get("nextcloud", "dbname")+' --database-user '+\
             self.config.get("nextcloud", "dbuser")+' --database-pass "'+self.config.get("nextcloud", "dbpassword")+\
-            '--admin-user "admin" --admin-pass "password"').split(), stdout=subprocess.PIPE)
+            '--admin-user "admin" --admin-pass "password"', "www-data", login=False)
 
-        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:install user_external').split(), stdout=subprocess.PIPE)
-        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:enable user_external').split(), stdout=subprocess.PIPE)
-        subprocess.Popen(('sudo -u www-data php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ user:disable admin').split(), stdout=subprocess.PIPE)
+        utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:install user_external', "www-data", login=False
+        utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ app:enable user_external', "www-data", login=False)
+        utils.exec_cmd('php '+self.config.get("nextcloud", "installpath")+'/nextcloud/occ user:disable admin', "www-data", login=False)
         
         link = "/etc/nginx/sites-enabled/nextcloud.conf"
         dst = "/etc/nginx/sites-available/nextcloud.conf"
